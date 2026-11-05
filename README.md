@@ -331,12 +331,4 @@ The evaluation compares:
 
 The objective is to assess whether the learned initial guesses provide a measurable improvement in nonlinear solver convergence.
 
----
 
-### Important Notes
-
-- The COMSOL `.mph` models and generated `.mat` datasets must be provided or generated separately unless explicitly included in the repository.
-- MATLAB and COMSOL versions must be compatible with the installed LiveLink interface.
-- Training on a CUDA-enabled GPU is recommended for larger meshes and datasets.
-- The current framework is primarily designed for two-dimensional incompressible laminar flow simulations.
-- Improved prediction accuracy does not necessarily guarantee fewer Newton iterations. The solver evaluation is therefore an essential part of the workflow.
