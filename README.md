@@ -113,7 +113,7 @@ Experiment outputs, trained checkpoints, and evaluation results are generated lo
 - **Python** — Machine learning pipeline and data processing
 - **PyTorch** — Neural network training and automatic differentiation
 - **PyTorch Geometric** — Graph neural network operations
-- **NVIDIA PhysicsNeMo** — Multi-scale graph neural network components
+- **NVIDIA PhysicsNeMo** — Mesh graph nets components
 - **Optuna** — Hyperparameter optimization
 
 ## Research Objective
@@ -138,7 +138,7 @@ Before running the framework, make sure the following software is available:
 - **MATLAB**, with a version compatible with the installed COMSOL release.
 - **Python**, with a version compatible with the dependencies specified in `requirements.txt`.
 - **PyTorch** and **PyTorch Geometric**.
-- **NVIDIA PhysicsNeMo**, for the BSMS architecture.
+- **NVIDIA PhysicsNeMo**, for the MeshGraphNet and BSMS architectures.
 
 An NVIDIA GPU with CUDA support is recommended for training, although the framework can also run on a CPU.
 
