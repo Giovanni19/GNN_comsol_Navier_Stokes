@@ -1,0 +1,86 @@
+name: Global Sweep/05_velocity_num_neurons_128
+seed: 68
+dataset:
+  paths:
+  - C:/Users/giovanni/.comsol/v64/llmatlab/channel2d_manual_stabilization_100R.mat
+  skip_initial: 320
+split:
+  mode: all_train
+  train_fraction: 0.8
+  val_fraction: 0.1
+  gap: 1
+training:
+  coupled: true
+  num_epochs: 500
+  batch_size: 1
+  velocity_data_weight: 1.0
+  pressure_data_weight: 1.0
+  data_loss:
+    type: mse_topk
+    topk_fraction: 0.1
+    topk_weight: 10.0
+  lr_scheduler:
+    type: step
+    step_size: 200
+    gamma: 0.6
+  physics_weight_strategy: fixed
+  continuity_weight: 0.0
+  momentum_weight: 0.0
+  dynamic_weight_learning_rate: 1.0e-05
+  enforce_boundary_values: true
+  direction_loss:
+    enabled: false
+  newton_loss:
+    weight: 1.0
+    type: mse_topk
+    topk_fraction: 0.1
+    topk_weight: 1.0
+networks:
+  velocity:
+    predicts: velocity
+    architecture: meshgraphnet
+    initialization: zero_output
+    features: time
+    use_node_type_features: true
+    use_physics_features: false
+    use_geometry_features: true
+    predict_delta: true
+    num_neurons: 128
+    processor_size: 10
+    num_layers_node_processor: 2
+    num_layers_edge_processor: 2
+    num_layers_node_encoder: 2
+    num_layers_edge_encoder: 2
+    num_layers_node_decoder: 2
+    aggregation: sum
+    num_layers: 1
+    dropout: 0.0
+    learning_rate: 1.0e-05
+    weight_decay: 1.0e-05
+  pressure:
+    predicts: pressure
+    architecture: bsms
+    initialization: zero_output
+    features: time
+    use_node_type_features: true
+    use_physics_features: false
+    use_geometry_features: true
+    predict_delta: true
+    num_neurons: 128
+    processor_size: 10
+    num_layers_node_processor: 2
+    num_layers_edge_processor: 2
+    num_layers_node_encoder: 2
+    num_layers_edge_encoder: 2
+    num_layers_node_decoder: 2
+    num_mesh_levels: 5
+    num_layers_bistride: 2
+    bistride_unet_levels: 1
+    aggregation: sum
+    num_layers: 1
+    dropout: 0.0
+    learning_rate: 1.0e-05
+    weight_decay: 1.0e-05
+fluid:
+  rho: 1.0
+  mu: 0.001

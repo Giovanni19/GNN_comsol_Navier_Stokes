@@ -1,0 +1,135 @@
+name: coupled_multisimulation_justdata
+
+seed: 68
+
+
+# ============================================================
+# DATASET
+# ============================================================
+
+dataset:
+  paths:
+    - C:/Users/giovanni/.comsol/v64/llmatlab/channel2d_manual_stabilization_100R_cfg1.mat
+    - C:/Users/giovanni/.comsol/v64/llmatlab/channel2d_manual_stabilization_100R_cfg2.mat
+    - C:/Users/giovanni/.comsol/v64/llmatlab/channel2d_manual_stabilization_100R_cfg3.mat
+    - C:/Users/giovanni/.comsol/v64/llmatlab/channel2d_manual_stabilization_100R_cfg4.mat
+    - C:/Users/giovanni/.comsol/v64/llmatlab/channel2d_manual_stabilization_100R_cfg5.mat
+  skip_initial: 5
+
+# ============================================================
+# SPLIT
+# ============================================================
+
+split:
+  mode: all_train
+
+  train_fraction: 0.80
+  val_fraction: 0.1
+  gap: 1
+
+
+# ============================================================
+# TRAINING
+# ============================================================
+
+training:
+  coupled: true
+
+  num_epochs: 520
+  batch_size: 1
+
+  velocity_data_weight: 0.0
+  pressure_data_weight: 0.0
+  
+  data_loss:
+    type: mse_topk
+    topk_fraction: 0.1
+    topk_weight: 0.0
+
+  lr_scheduler:
+    type: step
+    step_size: 150
+    gamma: 0.8
+
+  physics_weight_strategy: fixed
+
+  continuity_weight: 0.0
+  momentum_weight: 0.0
+
+  dynamic_weight_learning_rate: 1.0e-4
+  enforce_boundary_values: true
+
+  direction_loss:
+    enabled: false
+  
+  newton_loss:
+    weight: 1.0
+    type: mse_topk
+    topk_fraction: 0.10
+    topk_weight: 10.0
+
+# ============================================================
+# VELOCITY NETWORK
+# ============================================================
+
+networks:
+
+  velocity:
+
+    predicts: velocity
+    architecture: meshgraphnet
+    initialization: zero_output
+
+    features: time
+    use_node_type_features: true
+    use_physics_features: false
+    use_geometry_features: true
+
+    predict_delta: true
+
+
+    num_neurons: 64
+
+    processor_size: 10
+
+    num_layers_node_processor: 2
+    num_layers_edge_processor: 2
+
+    num_layers_node_encoder: 2
+    num_layers_edge_encoder: 2
+    num_layers_node_decoder: 2
+
+    aggregation: sum
+
+    learning_rate: 5.0e-5
+
+
+  pressure:
+
+    predicts: pressure
+    architecture: bsms
+    initialization: zero_output
+
+    features: time
+    use_node_type_features: true
+    use_physics_features: false
+    use_geometry_features: true
+
+    predict_delta: true
+
+    num_neurons: 128
+
+    processor_size: 10
+
+    num_layers_node_processor: 2
+    num_layers_edge_processor: 2
+
+    num_layers_node_encoder: 2
+    num_layers_edge_encoder: 2
+    num_layers_node_decoder: 2
+
+    num_mesh_levels: 5
+
+    aggregation: sum
+
+    learning_rate: 1.0e-5
