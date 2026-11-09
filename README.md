@@ -176,10 +176,6 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-If CUDA acceleration is required, ensure that the installed PyTorch build is compatible with the NVIDIA GPU and driver.
-
-The exact CUDA-enabled PyTorch installation instructions are available in the [official PyTorch documentation](https://pytorch.org/get-started/locally/).
-
 ### 4. Generate the COMSOL Database
 
 The first step consists of generating the reference simulation data used to train the GNN models.
